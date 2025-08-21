@@ -99,20 +99,18 @@ function TodoList() {
 
         {/* Stats Card */}
         <div className="bg-white/20 backdrop-blur-lg rounded-2xl p-6 mb-6 border border-white/30">
-          <div className="flex justify-between items-center">
-            <div className="text-center flex-1">
+          <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/30 text-center">
+            <div className="py-4 sm:py-0">
               <div className="text-2xl font-bold text-white">{totalTasks}</div>
               <div className="text-sm text-white/80">Total Tasks</div>
             </div>
-            <div className="w-px h-12 bg-white/30"></div>
-            <div className="text-center flex-1">
+            <div className="py-4 sm:py-0">
               <div className="text-2xl font-bold text-white">
                 {completedTasks}
               </div>
               <div className="text-sm text-white/80">Completed</div>
             </div>
-            <div className="w-px h-12 bg-white/30"></div>
-            <div className="text-center flex-1">
+            <div className="py-4 sm:py-0">
               <div className="text-2xl font-bold text-white">
                 {totalTasks - completedTasks}
               </div>
@@ -139,20 +137,20 @@ function TodoList() {
         <div className="bg-white/10 backdrop-blur-xl rounded-3xl p-6 shadow-2xl border border-white/20">
           {/* Add Task Section */}
           <div className="relative mb-6">
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <div className="relative flex-1">
                 <input
                   type="text"
-                  className="w-full p-4 pr-12 bg-white/90 backdrop-blur-sm rounded-2xl border-0 outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300 text-gray-800 placeholder-gray-500"
+                  className="w-full p-3 sm:p-4 bg-white/90 backdrop-blur-sm rounded-2xl border-0 outline-none focus:ring-2 focus:ring-white/50 transition-all duration-300 text-gray-800 placeholder-gray-500"
                   value={newTask}
                   onChange={(e) => setNewTask(e.target.value)}
-                  onKeyPress={handleKeyPress}
+                  onKeyDown={handleKeyPress}
                   placeholder="Add new task..."
                 />
               </div>
               <button
                 onClick={addTask}
-                className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                className="px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
               >
                 Add Task
               </button>
@@ -194,64 +192,67 @@ function TodoList() {
                     task.completed ? "opacity-75" : ""
                   }`}
                 >
-                  <div className="flex items-start gap-3">
-                    {/* Checkbox */}
-                    <button
-                      onClick={() => toggleTaskCompletion(task.id)}
-                      className={`relative w-5 h-5 rounded-full border-2 transition-all duration-300 flex-shrink-0 mt-1 ${
-                        task.completed
-                          ? "bg-gradient-to-r from-green-400 to-blue-500 border-transparent"
-                          : "border-white/50 hover:border-white"
-                      }`}
-                    >
-                      {task.completed && (
-                        <svg
-                          className="w-2.5 h-2.5 text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={3}
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
-                      )}
-                    </button>
-
-                    {/* Task Text or Edit Input */}
-                    {editingTaskId === task.id ? (
-                      <input
-                        type="text"
-                        value={editingText}
-                        onChange={(e) => setEditingText(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter") {
-                            saveEdit(task.id);
-                          } else if (e.key === "Escape") {
-                            cancelEdit();
-                          }
-                        }}
-                        autoFocus
-                        className="flex-1 p-2 bg-white/90 backdrop-blur-sm rounded-lg text-gray-800 outline-none focus:ring-2 focus:ring-blue-400"
-                      />
-                    ) : (
-                      <span
-                        className={`flex-1 text-white cursor-pointer transition-all duration-300 break-words overflow-hidden ${
-                          task.completed
-                            ? "line-through opacity-60"
-                            : "hover:text-white/80"
-                        }`}
+                  <div className="flex flex-col sm:flex-row sm:items-start gap-3">
+                    {/* Checkbox + Task */}
+                    <div className="flex flex-1 items-start gap-3">
+                      {/* Checkbox */}
+                      <button
                         onClick={() => toggleTaskCompletion(task.id)}
+                        className={`relative w-5 h-5 rounded-full border-2 transition-all duration-300 flex-shrink-0 mt-1 ${
+                          task.completed
+                            ? "bg-gradient-to-r from-green-400 to-blue-500 border-transparent"
+                            : "border-white/50 hover:border-white"
+                        }`}
                       >
-                        {task.text}
-                      </span>
-                    )}
+                        {task.completed && (
+                          <svg
+                            className="w-2.5 h-2.5 text-white absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={3}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                        )}
+                      </button>
+
+                      {/* Task Text or Edit Input */}
+                      {editingTaskId === task.id ? (
+                        <input
+                          type="text"
+                          value={editingText}
+                          onChange={(e) => setEditingText(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              saveEdit(task.id);
+                            } else if (e.key === "Escape") {
+                              cancelEdit();
+                            }
+                          }}
+                          autoFocus
+                          className="flex-1 min-w-0 p-2 bg-white/90 backdrop-blur-sm rounded-lg text-gray-800 outline-none focus:ring-2 focus:ring-blue-400"
+                        />
+                      ) : (
+                        <span
+                          className={`flex-1 text-white cursor-pointer transition-all duration-300 break-words ${
+                            task.completed
+                              ? "line-through opacity-60"
+                              : "hover:text-white/80"
+                          }`}
+                          onClick={() => toggleTaskCompletion(task.id)}
+                        >
+                          {task.text}
+                        </span>
+                      )}
+                    </div>
 
                     {/* Action Buttons */}
-                    <div className="flex gap-1">
+                    <div className="flex gap-1 sm:self-start self-end">
                       {editingTaskId === task.id ? (
                         <>
                           <button
